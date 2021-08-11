@@ -11,6 +11,7 @@ const app = express();
 // middleware
 app.use(cors());
 app.use(morgan("dev"));
+app.use(express.json());
 
 const DB = process.env.DATABASE.replace(
 	"<PASSWORD>",
