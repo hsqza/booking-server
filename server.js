@@ -19,6 +19,7 @@ app.use(cors(corsOptions));
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(cookieParser());
+console.log("Drugi commit do konfliktu");
 
 const DB = process.env.DATABASE.replace(
 	"<PASSWORD>",

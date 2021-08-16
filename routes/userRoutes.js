@@ -12,6 +12,8 @@ const { ERROR_EMPTY } = require("../utils/labels");
 
 const router = express.Router();
 
+console.log("Testowy commit do konfliktu");
+
 const validationRegisterRules = [
 	body("name").trim().notEmpty().withMessage(ERROR_EMPTY),
 	body("email")
