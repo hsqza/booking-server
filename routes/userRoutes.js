@@ -6,6 +6,7 @@ const {
 	loginUser,
 	userInfo,
 	isLoggedIn,
+	logoutUser,
 } = require("../controllers/userController");
 const { ERROR_EMPTY } = require("../utils/labels");
 
@@ -33,6 +34,7 @@ const validationLoginRules = [
 
 router.post("/register", validationRegisterRules, registerUser);
 router.post("/login", validationLoginRules, loginUser);
+router.get("/logout", logoutUser);
 
 // Middleware checking logged user
 router.use(isLoggedIn);
