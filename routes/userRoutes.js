@@ -1,10 +1,11 @@
 const express = require("express");
 const { body } = require("express-validator");
 const {
-	isLoggedIn,
 	showMessage,
 	registerUser,
 	loginUser,
+	userInfo,
+	isLoggedIn,
 } = require("../controllers/userController");
 const { ERROR_EMPTY } = require("../utils/labels");
 
@@ -30,8 +31,13 @@ const validationLoginRules = [
 	body("password").trim().notEmpty().withMessage(ERROR_EMPTY),
 ];
 
-router.get("/:message", isLoggedIn, showMessage);
 router.post("/register", validationRegisterRules, registerUser);
 router.post("/login", validationLoginRules, loginUser);
+
+// Middleware checking logged user
+router.use(isLoggedIn);
+
+router.get("/user", userInfo);
+router.get("/:message", showMessage);
 
 module.exports = router;

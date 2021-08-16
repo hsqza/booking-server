@@ -5,26 +5,36 @@ const jwt = require("jsonwebtoken");
 const { promisify } = require("util");
 const User = require("../models/userModel");
 
-// Only for rendered pages, no error!
 exports.isLoggedIn = async (req, res, next) => {
 	if (req.cookies.jwt) {
+		// 1) Verify token
+		let decoded = null;
+
 		try {
-			// 1) Verify token
-			const decoded = await promisify(jwt.verify)(
+			decoded = await promisify(jwt.verify)(
 				req.cookies.jwt,
 				process.env.JWT_SECRET
 			);
+		} catch (error) {
+			return res.status(401).json();
+		}
 
-			// 2). Check if user still exists
+		try {
 			const currentUser = await User.findById(decoded.id);
-			req.user = currentUser.id;
-
+			req.user = currentUser;
 			return next();
 		} catch (error) {
-			return next();
+			return res.status(401).json();
 		}
 	}
-	next();
+	return res.status(401).json();
+};
+
+exports.userInfo = (req, res) => {
+	if (!req.user) {
+		return res.status(401).json();
+	}
+	return res.status(200).json({ user: req.user });
 };
 
 exports.showMessage = (req, res) => {
@@ -112,10 +122,8 @@ exports.loginUser = async (req, res) => {
 		!user ||
 		!(await user.correctPassword(req.body.password, user.password))
 	) {
-		return res.status(401).json({ error: "Invalid credentials" });
+		return res.status(400).json({ error: "Invalid credentials" });
 	}
-
-	console.log("Jesteś zalogowany ");
 
 	createSendToken(user, 200, req, res);
 };
