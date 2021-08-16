@@ -12,6 +12,8 @@ const { ERROR_EMPTY } = require("../utils/labels");
 
 const router = express.Router();
 
+console.log("Dodatkowa zmiana na branchu głównym");
+
 const validationRegisterRules = [
 	body("name").trim().notEmpty().withMessage(ERROR_EMPTY),
 	body("email")

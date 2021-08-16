@@ -20,6 +20,10 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(cookieParser());
 
+function sayHello(name) {
+	console.log("Hey ", name);
+}
+
 const DB = process.env.DATABASE.replace(
 	"<PASSWORD>",
 	process.env.DATABASE_PASSWORD
@@ -36,6 +40,7 @@ mongoose
 // route middleware
 readdirSync("./routes").map((r) => app.use("/api", require(`./routes/${r}`)));
 
+sayHello("Hubert");
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
